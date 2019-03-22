@@ -6,25 +6,31 @@
 #define SNAKE_TUI_H
 
 #include "View.h"
+#include <termios.h>
 
-class Tui : View
+class Tui : public View
 {
 private:
-	int winx;
-	int winy;
+	int winx_;
+	int winy_;
 	void gotoxy(int x, int y);
 	void xline(int y, char sym);
 	void yline(int x, char sym);
 	void clear_win();
 	void print_score();
 	void print_version();
+	void onsig();
+	struct termios old_;
 	
 public:
 	Tui();
 	~Tui();
+	View * get();
+	void resize();
 	void draw ();
 	void run  ();
 };
 
+void hdl(int m);
 
 #endif //SNAKE_TUI_H
