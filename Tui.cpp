@@ -2,13 +2,16 @@
 // Created by Andrey Andriyaynen on 15/03/2019.
 //
 
-#include "Tui.h"
 #include <sys/ioctl.h>
 #include <signal.h>
 #include <stdio.h>
 #include <string>
+#include <functional>
 #include <fstream>
+#include "Tui.h"
+#include "Game.h"
 
+using namespace std::placeholders;
 
 static std::ofstream fout("log.txt");
 
@@ -61,7 +64,7 @@ View::~View()
 
 void Tui::onsig()
 {
-	struct sigaction act;
+	struct sigaction act = {0};
 	memset(&act, 0, sizeof(struct sigaction));
 	act.sa_handler = hdl;
 	sigset_t   set;
@@ -120,6 +123,12 @@ void Tui::yline(int x, char sym)
 }
 
 
+void Tui::snakepainter(Coord a, Dir d)
+{
+	gotoxy(a.first, a.second);
+	putchar("0^v<>"[d]);
+}
+
 
 void Tui::draw()
 {
@@ -130,7 +139,9 @@ void Tui::draw()
 	this->xline(winy_, '#');
 	this->yline(1, '#');
 	
-		
+	fout << "snake paint start" << std::endl;
+	game->paint(std::bind(&View::snakepainter, this, _1, _2));
+	fout << "snake paint end\n" << std::endl;
 	this->print_version();
 	
 	this->print_score();
@@ -167,7 +178,6 @@ void Tui::clear_win()
 {
 	printf("\e[H\e[J");
 }
-
 
 
 void Tui::resize()

@@ -5,8 +5,9 @@
 #ifndef SNAKE_TUI_H
 #define SNAKE_TUI_H
 
-#include "View.h"
 #include <termios.h>
+#include "View.h"
+
 
 class Tui : public View
 {
@@ -28,6 +29,7 @@ public:
 	View * get();
 	void resize();
 	void draw ();
+	void snakepainter(Coord a, Dir d);
 	void run  ();
 };
 

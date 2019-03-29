@@ -1,7 +1,7 @@
-OBJ = Tui.o main.o
+OBJ = Game.o Tui.o main.o
 PROG = main
-HDR = Tui.h View.h
-CXXFLAGS += -Wall -Wextra
+HDR = Game.h Tui.h View.h
+CXXFLAGS += -Wall -Wextra -std=c++17
 
 all: $(PROG)
 
