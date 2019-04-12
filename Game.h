@@ -11,9 +11,7 @@
 
 using Coord = std::pair <int, int>;
 
-
 using Rabbit = Coord;
-
 
 enum Dir {BODY, UP, DOWN, LEFT, RIGHT};
 
@@ -35,10 +33,12 @@ using SnakePainter = std::function <void (Coord coord, Dir dir)>;
 class Game
 {
 private:
-	std::list <Snake> snakes;
-	std::list <Rabbit> rabbits;
+	std::list <Snake  *> snakes;
+	std::list <Rabbit *> rabbits;
+	
 public:
-	void paint(SnakePainter p);
+	void visit(SnakePainter p);
+	void add(Snake * s);
 	Game();
 	~Game();
 };

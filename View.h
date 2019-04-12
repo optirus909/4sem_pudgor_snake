@@ -7,6 +7,15 @@
 
 #include "Game.h"
 
+
+class KeyPressable ///TODO move to model, because it makes cross dependencies
+{
+public:
+	void virtual onkey(int key) = 0;
+	virtual ~KeyPressable()     = 0;
+};
+
+
 class View
 {
 public:
@@ -20,6 +29,13 @@ public:
 	static View * inst;
 	
 	Game * game;
+	
+	KeyPressable * onkey_delegate;
+	
+	void setonkey(KeyPressable * p)
+	{
+		onkey_delegate = p;
+	}
 	
 	void set_model(Game * g)
 	{

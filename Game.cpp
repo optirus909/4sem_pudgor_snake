@@ -2,12 +2,12 @@
 // Created by Andrey Andriyaynen on 29/03/2019.
 //
 
-#include "Game.h"
 #include <fstream>
+#include "Game.h"
 
 static std::ofstream fout("log.txt");
 
-void Game::paint(SnakePainter p)
+void Game::visit(SnakePainter p)
 {
 	fout << "game paint before fors --------------------" << std::endl;
 	fout << "snakes count =" << snakes.size() << std::endl;
@@ -15,22 +15,30 @@ void Game::paint(SnakePainter p)
 	{
 		fout << "game paint for snakes" << std::endl;
 		bool first = false;
-		for (const auto &c: s.body)
+		for (const auto &c: s->body)
 		{
 			fout << "game paint for bodies" << std::endl;
-			p(c, first ? BODY : s.direction);
+			p(c, first ? BODY : s->direction);
 			first = true;
 		}
 	}
 	fout << "game paint after fors --------------------" << std::endl;
 }
 
+
+void Game::add(Snake * s)
+{
+	snakes.push_back(s);
+}
+
+
 Game::Game()
 {
 	//auto a = new Snake;
 	//snakes.push_back(a);
 	//fout << "dir1 = "<< snakes.end()->direction << std::endl;
-	snakes.push_back(Snake());
+	Snake s;
+	snakes.push_back(&s);
 }
 
 
@@ -47,6 +55,7 @@ Snake::Snake()
 	body.push_back(Coord(33, 5));///TODO rabbits
 	body.push_back(Coord(34, 5));
 }
+
 
 Snake::~Snake()
 {}

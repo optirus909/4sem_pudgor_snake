@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Tui.h"
 #include "Game.h"
+#include "Control.h"
 
 int main()
 {
@@ -9,6 +10,11 @@ int main()
 	Game g;
 	
 	t.set_model(&g);
+	
+	Snake s;
+	Human h(&s);
+	
+	g.add(&s);
 	
 	t.draw();
 	t.run();

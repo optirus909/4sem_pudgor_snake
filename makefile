@@ -1,6 +1,6 @@
-OBJ = Game.o Tui.o main.o
+OBJ = Game.o Tui.o Control.o main.o
 PROG = main
-HDR = Game.h Tui.h View.h
+HDR = Game.h Tui.h View.h Control.h
 CXXFLAGS += -Wall -Wextra -std=c++17
 
 all: $(PROG)

@@ -92,7 +92,7 @@ View * View::get()
 void hdl(int m)
 {
 	//static int count = 0;
-	View * v = View :: get();
+	View * v = View::get();
 	v->resize();
 	v->draw();
 	//printf("\e[%d;%dH", 1, 1);
@@ -140,7 +140,7 @@ void Tui::draw()
 	this->yline(1, '#');
 	
 	fout << "snake paint start" << std::endl;
-	game->paint(std::bind(&View::snakepainter, this, _1, _2));
+	game->visit(std::bind(&View::snakepainter, this, _1, _2));
 	fout << "snake paint end\n" << std::endl;
 	this->print_version();
 	
@@ -155,8 +155,10 @@ void Tui::draw()
 
 void Tui::run()
 {
-	while (getchar() != 'q')
+	while (int key = getchar() != 'q')
 	{
+		if(onkey_delegate)
+			onkey_delegate->onkey(key);
 		this->draw();
 		fout << "drawing" << std::endl;
 	}
