@@ -25,6 +25,8 @@ Tui::Tui()
 	
 	resize();
 	
+	inst = this;
+	
 	onsig();
 }
 
@@ -155,12 +157,18 @@ void Tui::draw()
 
 void Tui::run()
 {
-	while (int key = getchar() != 'q')
+	int key = getchar();
+	while (key != 'q')
 	{
 		if(onkey_delegate)
+		{
+			fout << "----------------------------run - key catched" <<std::endl;
 			onkey_delegate->onkey(key);
+		}
+		game->move();
 		this->draw();
 		fout << "drawing" << std::endl;
+		key = getchar();
 	}
 	
 	gotoxy(1, 1);

@@ -22,6 +22,7 @@ public:
 	std::list <Coord> body;
 	Dir direction;
 	
+	void move();
 	Snake();
 	~Snake();
 };
@@ -39,6 +40,7 @@ private:
 public:
 	void visit(SnakePainter p);
 	void add(Snake * s);
+	void move();
 	Game();
 	~Game();
 };

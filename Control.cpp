@@ -20,14 +20,27 @@ Human::Human(Snake * s) : Control(s)
 
 void Human::onkey(int key)
 {
-	printf("\e[%d;%dH", 50, 50);
-	printf("%c", key);
+	switch(key)
+	{
+		case 'w':
+			snake->direction = UP;
+			break;
+		case 'a':
+			snake->direction = LEFT;
+			break;
+		case 's':
+			snake->direction = DOWN;
+			break;
+		case 'd':
+			snake->direction = RIGHT;
+			break;
+	}
+	//printf("\e[%d;%dH", 50, 50);
+	//printf("%c", key);
 }
 
 KeyPressable::~KeyPressable()
-{
-
-}
+{}
 
 
 Control::~Control()

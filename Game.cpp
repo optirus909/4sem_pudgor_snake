@@ -15,7 +15,7 @@ void Game::visit(SnakePainter p)
 	{
 		fout << "game paint for snakes" << std::endl;
 		bool first = false;
-		for (const auto &c: s->body)
+		for (const auto &c: s->body)///ditch - see &
 		{
 			fout << "game paint for bodies" << std::endl;
 			p(c, first ? BODY : s->direction);
@@ -32,30 +32,55 @@ void Game::add(Snake * s)
 }
 
 
-Game::Game()
+void Game::move()
 {
-	//auto a = new Snake;
-	//snakes.push_back(a);
-	//fout << "dir1 = "<< snakes.end()->direction << std::endl;
-	Snake s;
-	snakes.push_back(&s);
+	for(const auto &s: snakes)
+		s->move();///TODO make snake move with timer
 }
 
 
-Game::~Game()
+void Snake::move()
 {
+	auto a = body.front();
+	
+	switch(direction)
+	{
+		case UP:
+			a.second--;
+			break;
+		case LEFT:
+			a.first--;
+			break;
+		case DOWN:
+			a.second++;
+			break;
+		case RIGHT:
+			a.first++;
+			break;
+	}
+	
+	body.push_front(a);
+	body.pop_back();
 }
 
 
 Snake::Snake()
 {
 	direction = UP;
-	body.push_back(Coord(33, 3));
-	body.push_back(Coord(33, 4));
-	body.push_back(Coord(33, 5));///TODO rabbits
-	body.push_back(Coord(34, 5));
+	for (int i = 0; i < 10; ++i)
+		body.push_back(Coord(33, 3+i));
+		
+	
+	//body.push_back(Coord(33, 5));///TODO rabbits
+	//body.push_back(Coord(34, 5));///TODO check memory, because there is sig fault 11 on sigwinch
 }
 
+
+Game::Game()
+{}
+
+Game::~Game()
+{}
 
 Snake::~Snake()
 {}
