@@ -8,7 +8,6 @@
 #include <termios.h>
 #include "View.h"
 
-
 class Tui : public View
 {
 private:

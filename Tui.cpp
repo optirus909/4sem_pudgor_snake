@@ -8,6 +8,8 @@
 #include <string>
 #include <functional>
 #include <fstream>
+#include <poll.h>
+#include <zconf.h>
 #include "Tui.h"
 #include "Game.h"
 
@@ -78,19 +80,6 @@ void Tui::onsig()
 }
 
 
-
-View * View::inst;
-
-View * View::get()
-{
-	if(inst)
-		return inst;
-	inst = new Tui;
-	return inst;
-}
-
-
-
 void hdl(int m)
 {
 	//static int count = 0;
@@ -158,17 +147,49 @@ void Tui::draw()
 void Tui::run()
 {
 	int key = getchar();
+	
+	const nfds_t fds_size = 1;
+	
+	struct timespec begin_time, end_time;
+	
+	pollfd fds[fds_size];
+	fds[0].fd = 0;
+	fds[0].events = POLL_IN;
+	
 	while (key != 'q')
 	{
-		if(onkey_delegate)
+		clock_gettime(CLOCK_REALTIME, &begin_time);
+		
+		int ret = poll(fds, fds_size, timeout_.first);
+		
+		clock_gettime(CLOCK_REALTIME, &end_time);
+		
+		int dt = (end_time.tv_sec - begin_time.tv_sec) * 1000 + (end_time.tv_nsec - begin_time.tv_nsec) / 1000000;
+		timeout_.first -= dt;
+		
+		if(ret < 0)
 		{
-			fout << "----------------------------run - key catched" <<std::endl;
-			onkey_delegate->onkey(key);
+			fout << "poll : Achtung!" << std::endl;
+			break;
 		}
-		game->move();
+		
+		if (ret == 0)
+		{
+			timeout_.second;
+		}
+		else
+		{
+			read(fds->fd, &key, 1);
+			if (onkey_delegate)
+			{
+				
+				fout << "----------------------------run - key catched" << std::endl;
+				onkey_delegate->onkey(key);
+			}
+		}
+		// ??game->move();
 		this->draw();
 		fout << "drawing" << std::endl;
-		key = getchar();
 	}
 	
 	gotoxy(1, 1);

@@ -4,6 +4,7 @@
 
 #include <fstream>
 #include "Game.h"
+#include "View.h"
 
 static std::ofstream fout("log.txt");
 
@@ -77,7 +78,11 @@ Snake::Snake()
 
 
 Game::Game()
-{}
+{
+	int SNAKETIMEOUT = 500;
+	View::get()->set_on_timer(SNAKETIMEOUT, std::bind(&Game::move, this));
+	
+}
 
 Game::~Game()
 {}

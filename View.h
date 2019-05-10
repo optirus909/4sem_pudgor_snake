@@ -7,6 +7,8 @@
 
 #include "Game.h"
 
+using timeout_fn = std::function<void ()>;
+using timeout = std::pair <int, timeout_fn>;
 
 class KeyPressable ///TODO move to model, because it makes cross dependencies
 {
@@ -36,6 +38,14 @@ public:
 	{
 		onkey_delegate = p;
 	}
+	
+	void set_on_timer(int time, timeout_fn t)
+	{
+		timeout_.first = time;
+		timeout_.second = t;
+	}
+	
+	timeout timeout_;
 	
 	void set_model(Game * g)
 	{
