@@ -11,7 +11,7 @@
 #include <poll.h>
 #include <zconf.h>
 #include "Tui.h"
-#include "Game.h"
+
 
 using namespace std::placeholders;
 
@@ -26,8 +26,6 @@ Tui::Tui()
 	tcsetattr(0, TCSAFLUSH, &a);
 	
 	resize();
-	
-	inst = this;
 	
 	onsig();
 }

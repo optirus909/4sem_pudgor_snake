@@ -25,7 +25,7 @@ private:
 public:
 	Tui();
 	~Tui();
-	View * get();
+	//View * get();
 	void resize();
 	void draw ();
 	void snakepainter(Coord a, Dir d);

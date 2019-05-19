@@ -9,6 +9,8 @@
 #include <list>
 #include <functional>
 
+//#include "View.h"
+
 using Coord = std::pair <int, int>;
 
 using Rabbit = Coord;

@@ -5,6 +5,7 @@
 #ifndef SNAKE_VIEW_H
 #define SNAKE_VIEW_H
 
+#include <functional>
 #include "Game.h"
 
 using timeout_fn = std::function<void ()>;
@@ -27,7 +28,8 @@ public:
 	void virtual snakepainter(Coord a, Dir d) = 0;
 	virtual ~View()      = 0;
 	
-	static View *  get();
+	//static View * inst_;
+	static View * get();
 	static View * inst;
 	
 	Game * game;

@@ -1,23 +1,24 @@
 #include <iostream>
-#include "Tui.h"
+#include "View.h"
 #include "Game.h"
+#include "Tui.h"
 #include "Control.h"
 
 int main()
 {
-	Tui t;
+	View * v = View::get();
 	
 	Game g;
 	
-	t.set_model(&g);
+	v->set_model(&g);
 	
 	Snake s;
 	Human h(&s);
 	
 	g.add(&s);
 	
-	t.draw();
-	t.run();
+	v->draw();
+	v->run();
 	
 	return 0;
 }

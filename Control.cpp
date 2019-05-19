@@ -4,7 +4,6 @@
 
 
 #include "Control.h"
-#include "View.h"
 
 Control::Control(Snake *s)
 {

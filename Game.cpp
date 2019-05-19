@@ -1,10 +1,6 @@
-//
-// Created by Andrey Andriyaynen on 29/03/2019.
-//
-
-#include <fstream>
 #include "Game.h"
 #include "View.h"
+#include <fstream>
 
 static std::ofstream fout("log.txt");
 
@@ -16,7 +12,7 @@ void Game::visit(SnakePainter p)
 	{
 		fout << "game paint for snakes" << std::endl;
 		bool first = false;
-		for (const auto &c: s->body)///ditch - see &
+		for (const auto &c: s->body)
 		{
 			fout << "game paint for bodies" << std::endl;
 			p(c, first ? BODY : s->direction);
@@ -81,7 +77,6 @@ Game::Game()
 {
 	int SNAKETIMEOUT = 500;
 	View::get()->set_on_timer(SNAKETIMEOUT, std::bind(&Game::move, this));
-	
 }
 
 Game::~Game()

@@ -1,4 +1,7 @@
-#include <View.h>
+#include "View.h"
+#include "Tui.h"
+#include "Game.h"
+#include "Control.h"
 
 View * View::inst;
 
