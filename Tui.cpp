@@ -20,6 +20,7 @@ static std::ofstream fout("log.txt");
 Tui::Tui()
 {
 	struct termios a;
+	
 	tcgetattr(0, &a);
 	old_ = a;
 	cfmakeraw(&a);
@@ -35,7 +36,7 @@ Tui::Tui()
 Tui::~Tui()
 {
 	//printf("\n");
-	this->resize();
+	resize();
 	clear_win();
 	
 	fout << "started - Tui::dtor" << std::endl;
@@ -48,11 +49,11 @@ Tui::~Tui()
 		printf("%c", str[i]);
 	}
 	
-	tcsetattr(0, TCSAFLUSH, &old_);
+	tcsetattr(0, TCSANOW, &old_);
 	
 	gotoxy(1, winy_);
 	
-	fout << "ended - Tui::dtor" << std::endl;
+	//fout << "ended - Tui::dtor" << std::endl;
 }
 
 
@@ -83,7 +84,9 @@ void hdl(int m)
 	//static int count = 0;
 	View * v = View::get();
 	v->resize();
+	fout << "    resize draw start" << std::endl;
 	v->draw();
+	fout << "    resize draw start" << std::endl;
 	//printf("\e[%d;%dH", 1, 1);
 	//printf("catched %d\n", count);
 	//count++;
@@ -128,9 +131,9 @@ void Tui::draw()
 	this->xline(winy_, '#');
 	this->yline(1, '#');
 	
-	fout << "snake paint start" << std::endl;
+	//fout << "snake paint start" << std::endl;
 	game->visit(std::bind(&View::snakepainter, this, _1, _2));
-	fout << "snake paint end\n" << std::endl;
+	//fout << "snake paint end\n" << std::endl;
 	this->print_version();
 	
 	this->print_score();
@@ -144,7 +147,7 @@ void Tui::draw()
 
 void Tui::run()
 {
-	int key = getchar();
+	char key;
 	
 	const nfds_t fds_size = 1;
 	
@@ -154,7 +157,7 @@ void Tui::run()
 	fds[0].fd = 0;
 	fds[0].events = POLL_IN;
 	
-	while (key != 'q')
+	while (true)
 	{
 		clock_gettime(CLOCK_REALTIME, &begin_time);
 		
@@ -163,21 +166,27 @@ void Tui::run()
 		clock_gettime(CLOCK_REALTIME, &end_time);
 		
 		int dt = (end_time.tv_sec - begin_time.tv_sec) * 1000 + (end_time.tv_nsec - begin_time.tv_nsec) / 1000000;
+		fout << "timeout = " << timeout_.first << " ";
+		fout << "dt = " << dt << " ";
 		timeout_.first -= dt;
+		fout << "timeout - dt = " << timeout_.first << " " << std::endl;
 		
 		if(ret < 0)
 		{
-			fout << "poll : Achtung!" << std::endl;
+			fout << "poll : Achtung!, ret = " << ret << std::endl;
 			break;
 		}
 		
-		if (ret == 0)
+		/*if (ret == 0)
 		{
+			fout << "start timer event" << std::endl;
 			timeout_.second;
-		}
-		else
+		}*/
+		else if (ret == 1)
 		{
 			read(fds->fd, &key, 1);
+			if(key == 'q')
+				break;
 			if (onkey_delegate)
 			{
 				
@@ -185,11 +194,20 @@ void Tui::run()
 				onkey_delegate->onkey(key);
 			}
 		}
+		
+		if (timeout_.first <= 0)
+		{
+			fout << "start timer event" << std::endl;
+			//timeout_.second;
+			game->move();
+			//dwset_on_timer(200, timeout_.second);
+			fout << "end   timer event" << std::endl;
+		}
 		// ??game->move();
 		this->draw();
 		fout << "drawing" << std::endl;
 	}
-	
+	fout << "exit" << std::endl;
 	gotoxy(1, 1);
 	fout << "exit - Tui::run" << std::endl;
 }
@@ -211,6 +229,7 @@ void Tui::clear_win()
 
 void Tui::resize()
 {
+	fout << "  resize start" << std::endl;
 	struct winsize w_size;
 	
 	ioctl(1, TIOCGWINSZ, &w_size);
@@ -219,6 +238,7 @@ void Tui::resize()
 	winx_ = w_size.ws_col;
 	
 	clear_win();
+	fout << "  resize finish" << std::endl;
 }
 
 

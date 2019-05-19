@@ -4,22 +4,24 @@
 
 static std::ofstream fout("log.txt");
 
+int SNAKETIMEOUT = 100;
+
 void Game::visit(SnakePainter p)
 {
-	fout << "game paint before fors --------------------" << std::endl;
-	fout << "snakes count =" << snakes.size() << std::endl;
+	//fout << "game paint before fors --------------------" << std::endl;
+	//fout << "snakes count =" << snakes.size() << std::endl;
 	for(const auto &s: snakes)
 	{
-		fout << "game paint for snakes" << std::endl;
+	//	fout << "game paint for snakes" << std::endl;
 		bool first = false;
 		for (const auto &c: s->body)
 		{
-			fout << "game paint for bodies" << std::endl;
+	//		fout << "game paint for bodies" << std::endl;
 			p(c, first ? BODY : s->direction);
 			first = true;
 		}
 	}
-	fout << "game paint after fors --------------------" << std::endl;
+	//fout << "game paint after fors --------------------" << std::endl;
 }
 
 
@@ -31,15 +33,21 @@ void Game::add(Snake * s)
 
 void Game::move()
 {
+	fout << "  start game move" << std::endl;
+	
 	for(const auto &s: snakes)
 		s->move();///TODO make snake move with timer
+	
+	View::get()->set_on_timer(SNAKETIMEOUT, std::bind(&Game::move, this));
+	
+	fout << "  end game move" << std::endl;
 }
 
 
 void Snake::move()
 {
 	auto a = body.front();
-	
+	fout << "      start snake move" << std::endl;
 	switch(direction)
 	{
 		case UP:
@@ -58,13 +66,15 @@ void Snake::move()
 	
 	body.push_front(a);
 	body.pop_back();
+	
+	fout << "        end snake move" << std::endl;
 }
 
 
 Snake::Snake()
 {
 	direction = UP;
-	for (int i = 0; i < 10; ++i)
+	for (int i = 0; i < 20; ++i)
 		body.push_back(Coord(33, 3+i));
 		
 	
@@ -75,7 +85,6 @@ Snake::Snake()
 
 Game::Game()
 {
-	int SNAKETIMEOUT = 500;
 	View::get()->set_on_timer(SNAKETIMEOUT, std::bind(&Game::move, this));
 }
 
