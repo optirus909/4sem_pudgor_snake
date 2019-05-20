@@ -111,6 +111,8 @@ void Game::newRabbit()
 		}
 	}
 	
+	fout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<rabbits_cnt = " << rabbits.size() << std::endl;
+	
 	fout << "    end newRabbit" << std::endl;
 }
 

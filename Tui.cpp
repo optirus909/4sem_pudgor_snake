@@ -170,15 +170,20 @@ void Tui::run()
 		//fout << "timeout = " << timeout_.first << " ";
 		//fout << "dt = " << dt << " ";
 		int tsize = timeouts_.size();
+		fout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
 		for (int i = 0; i < tsize; i++)
 		{
+			fout << "start changing timeouts, timeouts_cnt = " << timeouts_.size() << std::endl;
 			timeout temp = timeouts_.front();
+			fout << "timeouts.front(), timeouts_cnt = " << timeouts_.size() << std::endl;
 			timeouts_.pop_front();
+			fout << "timeouts.pop_front(), timeouts_cnt = " << timeouts_.size() << std::endl;
 			fout << "timeout [" << i << "] = " << temp.first << " ";
 			fout << "dt = " << dt << " ";
 			temp.first -= dt;
 			fout << "timeout [" << i << "] - dt = " << temp.first << " " << std::endl;
 			timeouts_.push_back(temp);
+			fout << "timeouts.push_back(), timeouts_cnt = " << timeouts_.size() << std::endl;
 		}
 		
 		
@@ -195,17 +200,26 @@ void Tui::run()
 			}
 		}
 		tsize = timeouts_.size();
+		fout << "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>" << std::endl;
 		for (int i = 0; i < tsize; i++)
 		{
+			fout << "start changing timeouts, timeouts_cnt = " << timeouts_.size() << std::endl;
 			timeout temp = timeouts_.front();
+			fout << "timeouts.front(), timeouts_cnt = " << timeouts_.size() << std::endl;
 			timeouts_.pop_front();
+			
+			fout << "timeouts.pop_front(), timeouts_cnt = " << timeouts_.size() << std::endl;
 			
 			if (temp.first <= 0)
 			{
 				temp.second();
 			}
+			else
+			{
+				timeouts_.push_back(temp);
+			}
 			
-			timeouts_.push_back(temp);
+			fout << "timeouts.push_back(), timeouts_cnt = " << timeouts_.size() << std::endl;
 		}
 		draw();
 	}
