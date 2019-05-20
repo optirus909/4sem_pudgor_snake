@@ -12,3 +12,8 @@ View * View::get()
 	inst = new Tui;
 	return inst;
 }
+
+View::~View()
+{
+
+}

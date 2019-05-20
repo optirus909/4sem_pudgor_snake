@@ -20,5 +20,6 @@ int main()
 	v->draw();
 	v->run();
 	
+	v->~View();
 	return 0;
 }

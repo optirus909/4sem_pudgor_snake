@@ -73,7 +73,7 @@ void Snake::move()
 
 Snake::Snake()
 {
-	direction = UP;
+	direction = RIGHT;
 	for (int i = 0; i < 20; ++i)
 		body.push_back(Coord(33, 3+i));
 		

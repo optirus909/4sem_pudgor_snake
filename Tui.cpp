@@ -24,10 +24,9 @@ Tui::Tui()
 	tcgetattr(0, &a);
 	old_ = a;
 	cfmakeraw(&a);
-	tcsetattr(0, TCSAFLUSH, &a);
+	tcsetattr(0, TCSANOW, &a);
 	
 	resize();
-	
 	onsig();
 }
 
@@ -49,20 +48,10 @@ Tui::~Tui()
 		printf("%c", str[i]);
 	}
 	
-	tcsetattr(0, TCSANOW, &old_);
-	
 	gotoxy(1, winy_);
-	
-	//fout << "ended - Tui::dtor" << std::endl;
+	tcsetattr(0, TCSAFLUSH, &old_);
+	fout << "ended - Tui::dtor" << std::endl;
 }
-
-
-
-View::~View()
-{
-
-}
-
 
 
 void Tui::onsig()
@@ -171,18 +160,19 @@ void Tui::run()
 		timeout_.first -= dt;
 		fout << "timeout - dt = " << timeout_.first << " " << std::endl;
 		
-		if(ret < 0)
+		/*if(ret < 0)
 		{
 			fout << "poll : Achtung!, ret = " << ret << std::endl;
 			break;
-		}
+		}*/
 		
 		/*if (ret == 0)
 		{
 			fout << "start timer event" << std::endl;
 			timeout_.second;
 		}*/
-		else if (ret == 1)
+		//else
+		if (ret == 1)
 		{
 			read(fds->fd, &key, 1);
 			if(key == 'q')
