@@ -36,7 +36,6 @@ Tui::Tui()
 Tui::~Tui()
 {
 	//printf("\n");
-	resize();
 	clear_win();
 	
 	//fout << "started - Tui::dtor" << std::endl;

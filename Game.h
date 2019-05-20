@@ -53,6 +53,6 @@ public:
 	~Game();
 };
 
-int getRandomNumber(int min, int max);
+int getRandomNumber(int minv, int maxv);
 
 #endif //SNAKE_GAME_H
