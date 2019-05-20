@@ -11,8 +11,6 @@
 class Tui : public View
 {
 private:
-	int winx_;
-	int winy_;
 	void gotoxy(int x, int y);
 	void xline(int y, char sym);
 	void yline(int x, char sym);
@@ -21,17 +19,22 @@ private:
 	void print_version();
 	void onsig();
 	struct termios old_;
-	
+	int winx_;
+	int winy_;
 public:
 	Tui();
 	~Tui();
 	//View * get();
+	int getX();
+	int getY();
 	void resize();
 	void draw ();
 	void snakepainter(Coord a, Dir d);
+	void rabbitpainter(Coord a);
 	void run  ();
 };
 
+bool compare (timeout a, timeout b);
 void hdl(int m);
 
 #endif //SNAKE_TUI_H

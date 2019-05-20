@@ -26,6 +26,7 @@ public:
 	void virtual run  () = 0;
 	void virtual resize()= 0;
 	void virtual snakepainter(Coord a, Dir d) = 0;
+	void virtual rabbitpainter(Coord a) = 0;
 	virtual ~View()      = 0;
 	
 	//static View * inst_;
@@ -36,6 +37,9 @@ public:
 	
 	KeyPressable * onkey_delegate;
 	
+	int virtual getX() = 0;
+	int virtual getY() = 0;
+	
 	void setonkey(KeyPressable * p)
 	{
 		onkey_delegate = p;
@@ -43,11 +47,13 @@ public:
 	
 	void set_on_timer(int time, timeout_fn t)
 	{
-		timeout_.first = time;
-		timeout_.second = t;
+		timeout temp;
+		temp.first = time;
+		temp.second = t;
+		timeouts_.push_back(temp);
 	}
 	
-	timeout timeout_;
+	std::list <timeout> timeouts_;
 	
 	void set_model(Game * g)
 	{

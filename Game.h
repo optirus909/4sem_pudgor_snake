@@ -11,7 +11,11 @@
 
 //#include "View.h"
 
-using Coord = std::pair <int, int>;
+struct Coord : public std::pair <int, int>
+{
+	using Base = std::pair<int, int>;
+	using Base::Base;
+};
 
 using Rabbit = Coord;
 
@@ -29,23 +33,26 @@ public:
 	~Snake();
 };
 
-
 using SnakePainter = std::function <void (Coord coord, Dir dir)>;
-
+using RabbitPainter = std::function <void (Coord coord)>;
 
 class Game
 {
 private:
 	std::list <Snake  *> snakes;
-	std::list <Rabbit *> rabbits;
+	std::list <Rabbit> rabbits;
 	
 public:
+	void rabbitsVisit(RabbitPainter p);
 	void visit(SnakePainter p);
 	void add(Snake * s);
 	void move();
+	void newRabbit();
+	bool isFilled(Coord c);
 	Game();
 	~Game();
 };
 
+int getRandomNumber(int min, int max);
 
 #endif //SNAKE_GAME_H

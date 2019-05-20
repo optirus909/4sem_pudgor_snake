@@ -4,7 +4,19 @@
 
 static std::ofstream fout("log.txt");
 
-int SNAKETIMEOUT = 100;
+int SNAKETIMEOUT = 200;
+int RABBITTIMEOUT = 500;
+
+void Game::rabbitsVisit(RabbitPainter p)
+{
+	fout << "start rabbitVisit" << std::endl;
+	for(const auto s: rabbits)
+	{
+		fout << "visitrabbirrabbit :" << s.first << " " << s.second << std::endl;
+		p(s);
+	}
+	fout << "  end rabbitVisit" << std::endl;
+}
 
 void Game::visit(SnakePainter p)
 {
@@ -36,7 +48,7 @@ void Game::move()
 	fout << "  start game move" << std::endl;
 	
 	for(const auto &s: snakes)
-		s->move();///TODO make snake move with timer
+		s->move();
 	
 	View::get()->set_on_timer(SNAKETIMEOUT, std::bind(&Game::move, this));
 	
@@ -74,18 +86,68 @@ void Snake::move()
 Snake::Snake()
 {
 	direction = RIGHT;
-	for (int i = 0; i < 20; ++i)
-		body.push_back(Coord(33, 3+i));
-		
+	for (int i = 0; i < 3; ++i)
+		body.push_back(Coord(8-i, 8));
+}
+
+
+void Game::newRabbit()
+{
+	fout << "  start newRabbit" << std::endl;
+	srand(time(NULL));
+	Coord * c = new Coord;
+	View * v = View::get();
+	v->set_on_timer(RABBITTIMEOUT, std::bind(&Game::newRabbit, this));
 	
-	//body.push_back(Coord(33, 5));///TODO rabbits
-	//body.push_back(Coord(34, 5));///TODO check memory, because there is sig fault 11 on sigwinch
+	while (true)
+	{
+		c->first  = getRandomNumber(2, v->getX() - 1);
+		c->second = getRandomNumber(2, v->getY() - 1);
+		
+		if (!isFilled(*c))
+		{
+			rabbits.push_back(*c);
+			break;
+		}
+	}
+	
+	fout << "    end newRabbit" << std::endl;
+}
+
+
+bool Game::isFilled(Coord c)
+{
+	for(const auto &s: snakes)
+	{
+		for (const auto &sbody: s->body)
+		{
+			if (c == sbody)
+				return false;
+		}
+	}
+	
+	for(const auto s: rabbits)
+	{
+		if(c == s)
+			return false;
+	}
+	
+	return true;
+}
+
+
+int getRandomNumber(int min, int max)
+{
+	static const double fraction = 1.0 / (static_cast<double>(RAND_MAX) + 1.0);
+	return static_cast<int>(rand() * fraction * (max - min + 1) + min);
 }
 
 
 Game::Game()
 {
-	View::get()->set_on_timer(SNAKETIMEOUT, std::bind(&Game::move, this));
+	View * v = View::get();
+	v->set_on_timer(SNAKETIMEOUT, std::bind(&Game::move, this));
+	v->set_on_timer(RABBITTIMEOUT, std::bind(&Game::newRabbit, this));
 }
 
 Game::~Game()
