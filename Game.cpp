@@ -11,13 +11,13 @@ enum Cell {RABBIT, SNAKE, EMPTY, BORDER};
 
 void Game::rabbitsVisit(RabbitPainter p)
 {
-	fout << "start rabbitVisit" << std::endl;
+	//fout << "start rabbitVisit" << std::endl;
 	for(const auto s: rabbits)
 	{
-		fout << "visitrabbirrabbit :x = " << s.first << " y = " << s.second << std::endl;
+	//	fout << "visitrabbirrabbit :x = " << s.first << " y = " << s.second << std::endl;
 		p(s);
 	}
-	fout << "  end rabbitVisit" << std::endl;
+	//fout << "  end rabbitVisit" << std::endl;
 }
 
 void Game::visit(SnakePainter p)
@@ -47,7 +47,7 @@ void Game::add(Snake * s)
 
 void Game::move()
 {
-	fout << "  start game move" << std::endl;
+	//fout << "  start game move" << std::endl;
 	
 	for(const auto &s: snakes)
 	{
@@ -55,14 +55,14 @@ void Game::move()
 		View::get()->set_on_timer(SNAKETIMEOUT, std::bind(&Game::move, this));
 	}
 	
-	fout << "  end game move" << std::endl;
+	//fout << "  end game move" << std::endl;
 }
 
 
 void Snake::move()
 {
 	auto a = body.front();
-	fout << "      start snake move" << std::endl;
+	//fout << "      start snake move" << std::endl;
 	switch(direction)
 	{
 		case UP:
@@ -89,8 +89,10 @@ void Snake::move()
 			break;
 		}
 		case SNAKE:
+			View::get()->~View();
 			break;
 		case BORDER:
+			View::get()->~View();
 			break;
 		case EMPTY:
 		{
@@ -102,7 +104,7 @@ void Snake::move()
 	
 	
 	
-	fout << "        end snake move" << std::endl;
+	//fout << "        end snake move" << std::endl;
 }
 
 
@@ -133,16 +135,16 @@ int getRandomNumber(int minv, int maxv)
 	do
 	{
 		temp = rand() % maxv;
-		fout << "rand number = " << temp << std::endl;
+		//fout << "rand number = " << temp << std::endl;
 	} while (temp < minv || temp > maxv);
 	
-	fout << "               returned rand number = " << temp << std::endl;
+	//fout << "               returned rand number = " << temp << std::endl;
 	return temp;
 }
 
 void Game::newRabbit()
 {
-	fout << "  start newRabbit" << std::endl;
+	//fout << "  start newRabbit" << std::endl;
 	Coord * c = new Coord;
 	View * v = View::get();
 	v->set_on_timer(RABBITTIMEOUT, std::bind(&Game::newRabbit, this));
@@ -159,9 +161,9 @@ void Game::newRabbit()
 		}
 	}
 	
-	fout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<rabbits_cnt = " << rabbits.size() << std::endl;
+	//fout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<rabbits_cnt = " << rabbits.size() << std::endl;
 	
-	fout << "    end newRabbit" << std::endl;
+	//fout << "    end newRabbit" << std::endl;
 }
 
 

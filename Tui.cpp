@@ -74,9 +74,9 @@ void hdl(int m)
 {
 	View * v = View::get();
 	v->resize();
-	fout << "    resize draw start" << std::endl;
+	//fout << "    resize draw start" << std::endl;
 	v->draw();
-	fout << "    resize draw start" << std::endl;
+	//fout << "    resize draw start" << std::endl;
 }
 
 
@@ -110,7 +110,7 @@ void Tui::snakepainter(Coord a, Dir d)
 
 void Tui::rabbitpainter(Coord a)
 {
-	fout << "       start paint rabbit" << std::endl;
+	//fout << "       start paint rabbit" << std::endl;
 	gotoxy(a.first, a.second);
 	putchar('@');
 }
@@ -171,20 +171,20 @@ void Tui::run()
 		//fout << "timeout = " << timeout_.first << " ";
 		//fout << "dt = " << dt << " ";
 		int tsize = timeouts_.size();
-		fout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+		//fout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
 		for (int i = 0; i < tsize; i++)
 		{
-			fout << "start changing timeouts, timeouts_cnt = " << timeouts_.size() << std::endl;
+			//fout << "start changing timeouts, timeouts_cnt = " << timeouts_.size() << std::endl;
 			timeout temp = timeouts_.front();
-			fout << "timeouts.front(), timeouts_cnt = " << timeouts_.size() << std::endl;
+			//fout << "timeouts.front(), timeouts_cnt = " << timeouts_.size() << std::endl;
 			timeouts_.pop_front();
-			fout << "timeouts.pop_front(), timeouts_cnt = " << timeouts_.size() << std::endl;
-			fout << "timeout [" << i << "] = " << temp.first << " ";
-			fout << "dt = " << dt << " ";
+			//fout << "timeouts.pop_front(), timeouts_cnt = " << timeouts_.size() << std::endl;
+			//fout << "timeout [" << i << "] = " << temp.first << " ";
+			//fout << "dt = " << dt << " ";
 			temp.first -= dt;
-			fout << "timeout [" << i << "] - dt = " << temp.first << " " << std::endl;
+			//fout << "timeout [" << i << "] - dt = " << temp.first << " " << std::endl;
 			timeouts_.push_back(temp);
-			fout << "timeouts.push_back(), timeouts_cnt = " << timeouts_.size() << std::endl;
+			//fout << "timeouts.push_back(), timeouts_cnt = " << timeouts_.size() << std::endl;
 		}
 		
 		
@@ -193,26 +193,26 @@ void Tui::run()
 			read(fds->fd, &key, 1);
 			if(key == 'q')
 			{
-				fout << "----------------------------exit catched" << std::endl;
+				//fout << "----------------------------exit catched" << std::endl;
 				break;
 			}
 			if (onkey_delegate)
 			{
 				
-				fout << "----------------------------run - key catched" << std::endl;
+				//fout << "----------------------------run - key catched" << std::endl;
 				onkey_delegate->onkey(key);
 			}
 		}
 		tsize = timeouts_.size();
-		fout << "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>" << std::endl;
+		//fout << "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>" << std::endl;
 		for (int i = 0; i < tsize; i++)
 		{
-			fout << "start changing timeouts, timeouts_cnt = " << timeouts_.size() << std::endl;
+			//fout << "start changing timeouts, timeouts_cnt = " << timeouts_.size() << std::endl;
 			timeout temp = timeouts_.front();
-			fout << "timeouts.front(), timeouts_cnt = " << timeouts_.size() << std::endl;
+			//fout << "timeouts.front(), timeouts_cnt = " << timeouts_.size() << std::endl;
 			timeouts_.pop_front();
 			
-			fout << "timeouts.pop_front(), timeouts_cnt = " << timeouts_.size() << std::endl;
+			//fout << "timeouts.pop_front(), timeouts_cnt = " << timeouts_.size() << std::endl;
 			
 			if (temp.first <= 0)
 			{
@@ -223,7 +223,7 @@ void Tui::run()
 				timeouts_.push_back(temp);
 			}
 			
-			fout << "timeouts.push_back(), timeouts_cnt = " << timeouts_.size() << std::endl;
+			//fout << "timeouts.push_back(), timeouts_cnt = " << timeouts_.size() << std::endl;
 		}
 		draw();
 	}
@@ -261,7 +261,7 @@ int Tui::getY()
 
 void Tui::resize()
 {
-	fout << "  resize start" << std::endl;
+	//fout << "  resize start" << std::endl;
 	struct winsize w_size;
 	
 	ioctl(1, TIOCGWINSZ, &w_size);
@@ -270,18 +270,19 @@ void Tui::resize()
 	winx_ = w_size.ws_col;
 	
 	clear_win();
-	fout << "  resize finish" << std::endl;
+	//fout << "  resize finish" << std::endl;
 }
 
 
 
 void Tui::print_score()
 {
-	std::string str = "Score: ";
+	std::string str = " Score: ";
 	
 	std::string score = std::to_string(View::get()->game->score_);
 	
 	str += score;
+	str += " ";
 	
 	for (int i = 0; i < str.length(); ++i)
 	{
@@ -294,7 +295,7 @@ void Tui::print_score()
 
 void Tui::print_version()
 {
-	std::string str = "Snake 1.0";
+	std::string str = " Snake 1.0 ";
 	
 	for (int i = 0; i < str.length(); ++i)
 	{
