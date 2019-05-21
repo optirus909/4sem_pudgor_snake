@@ -22,16 +22,20 @@ void Human::onkey(int key)
 	switch(key)
 	{
 		case 'w':
-			snake->direction = UP;
+			if(snake->direction != DOWN)
+				snake->direction = UP;
 			break;
 		case 'a':
-			snake->direction = LEFT;
+			if(snake->direction != RIGHT)
+				snake->direction = LEFT;
 			break;
 		case 's':
-			snake->direction = DOWN;
+			if(snake->direction != UP)
+				snake->direction = DOWN;
 			break;
 		case 'd':
-			snake->direction = RIGHT;
+			if(snake->direction != LEFT)
+				snake->direction = RIGHT;
 			break;
 	}
 	//printf("\e[%d;%dH", 50, 50);

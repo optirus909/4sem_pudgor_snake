@@ -35,6 +35,7 @@ Tui::Tui()
 
 Tui::~Tui()
 {
+	fout << "started func tui dtor" << std::endl;
 	//printf("\n");
 	clear_win();
 	
@@ -49,8 +50,9 @@ Tui::~Tui()
 	}
 	
 	gotoxy(1, winy_);
+	fout << "pochti ended - Tui::dtor" << std::endl;
 	tcsetattr(0, TCSAFLUSH, &old_);
-	//fout << "ended - Tui::dtor" << std::endl;
+	fout << "ended - Tui::dtor" << std::endl;
 }
 
 
@@ -190,7 +192,10 @@ void Tui::run()
 		{
 			read(fds->fd, &key, 1);
 			if(key == 'q')
+			{
+				fout << "----------------------------exit catched" << std::endl;
 				break;
+			}
 			if (onkey_delegate)
 			{
 				

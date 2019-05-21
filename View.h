@@ -8,6 +8,7 @@
 #include <functional>
 #include "Game.h"
 
+
 using timeout_fn = std::function<void ()>;
 using timeout = std::pair <int, timeout_fn>;
 
@@ -29,7 +30,6 @@ public:
 	void virtual rabbitpainter(Coord a) = 0;
 	virtual ~View()      = 0;
 	
-	//static View * inst_;
 	static View * get();
 	static View * inst;
 	

@@ -5,7 +5,7 @@
 static std::ofstream fout("log.txt");
 
 int SNAKETIMEOUT = 200;
-int RABBITTIMEOUT = 500;
+int RABBITTIMEOUT = 3000;
 
 void Game::rabbitsVisit(RabbitPainter p)
 {
@@ -116,7 +116,7 @@ void Game::newRabbit()
 		c->first  = getRandomNumber(2, v->getX() - 1);
 		c->second = getRandomNumber(2, v->getY() - 1);
 		
-		if (isFilled(*c))
+		if (!isFilled(*c))
 		{
 			rabbits.push_back(*c);
 			break;
@@ -136,17 +136,17 @@ bool Game::isFilled(Coord c)
 		for (const auto &sbody: s->body)
 		{
 			if (c == sbody)
-				return false;
+				return true;
 		}
 	}
 	
 	for(const auto s: rabbits)
 	{
 		if(c == s)
-			return false;
+			return true;
 	}
 	
-	return true;
+	return false;
 }
 
 
@@ -161,7 +161,9 @@ Game::Game()
 }
 
 Game::~Game()
-{}
+{
+
+}
 
 Snake::~Snake()
 {}

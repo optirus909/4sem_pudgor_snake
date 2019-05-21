@@ -22,6 +22,7 @@ private:
 	int winx_;
 	int winy_;
 public:
+	
 	Tui();
 	~Tui();
 	//View * get();
