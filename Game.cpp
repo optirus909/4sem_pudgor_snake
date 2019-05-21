@@ -7,6 +7,8 @@ static std::ofstream fout("log.txt");
 int SNAKETIMEOUT = 200;
 int RABBITTIMEOUT = 3000;
 
+enum Cell {RABBIT, SNAKE, EMPTY, BORDER};
+
 void Game::rabbitsVisit(RabbitPainter p)
 {
 	fout << "start rabbitVisit" << std::endl;
@@ -48,9 +50,10 @@ void Game::move()
 	fout << "  start game move" << std::endl;
 	
 	for(const auto &s: snakes)
+	{
 		s->move();
-	
-	View::get()->set_on_timer(SNAKETIMEOUT, std::bind(&Game::move, this));
+		View::get()->set_on_timer(SNAKETIMEOUT, std::bind(&Game::move, this));
+	}
 	
 	fout << "  end game move" << std::endl;
 }
@@ -76,10 +79,42 @@ void Snake::move()
 			break;
 	}
 	
-	body.push_front(a);
-	body.pop_back();
+	switch (View::get()->game->isFilled(a))
+	{
+		case RABBIT:
+		{
+			View::get()->game->killRabbit(a);
+			body.push_front(a);
+			break;
+		}
+		case SNAKE:
+			break;
+		case BORDER:
+			break;
+		case EMPTY:
+		{
+			body.push_front(a);
+			body.pop_back();
+			break;
+		}
+	}
+	
+	
 	
 	fout << "        end snake move" << std::endl;
+}
+
+
+void Game::killRabbit(Coord c)
+{
+	for(const auto s: rabbits)
+	{
+		if(c == s)
+		{
+			rabbits.remove(s);
+			break;
+		}
+	}
 }
 
 
@@ -116,7 +151,7 @@ void Game::newRabbit()
 		c->first  = getRandomNumber(2, v->getX() - 1);
 		c->second = getRandomNumber(2, v->getY() - 1);
 		
-		if (!isFilled(*c))
+		if (isFilled(*c) == EMPTY)
 		{
 			rabbits.push_back(*c);
 			break;
@@ -129,24 +164,27 @@ void Game::newRabbit()
 }
 
 
-bool Game::isFilled(Coord c)
+int Game::isFilled(Coord c)
 {
 	for(const auto &s: snakes)
 	{
 		for (const auto &sbody: s->body)
 		{
 			if (c == sbody)
-				return true;
+				return SNAKE;
 		}
 	}
 	
 	for(const auto s: rabbits)
 	{
 		if(c == s)
-			return true;
+			return RABBIT;
 	}
 	
-	return false;
+	if((c.first == 1) || (c.second == 1) || (c.first == View::get()->getX()) || (c.second == View::get()->getY()))
+		return BORDER;
+	
+	return EMPTY;
 }
 
 

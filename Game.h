@@ -48,7 +48,8 @@ public:
 	void add(Snake * s);
 	void move();
 	void newRabbit();
-	bool isFilled(Coord c);
+	void killRabbit(Coord c);
+	int isFilled(Coord c);
 	Game();
 	~Game();
 };
