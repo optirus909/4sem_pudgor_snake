@@ -43,6 +43,8 @@ private:
 	std::list <Rabbit> rabbits;
 	
 public:
+	int score_ = 0;
+	
 	void rabbitsVisit(RabbitPainter p);
 	void visit(SnakePainter p);
 	void add(Snake * s);

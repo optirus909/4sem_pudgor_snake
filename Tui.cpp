@@ -277,13 +277,18 @@ void Tui::resize()
 
 void Tui::print_score()
 {
-	std::string str = "Score: 1";
+	std::string str = "Score: ";
+	
+	std::string score = std::to_string(View::get()->game->score_);
+	
+	str += score;
 	
 	for (int i = 0; i < str.length(); ++i)
 	{
 		gotoxy(winx_/2 - str.length()/2 + i, winy_);
 		printf("%c", str[i]);
 	}
+	
 }
 
 

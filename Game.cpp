@@ -4,7 +4,7 @@
 
 static std::ofstream fout("log.txt");
 
-int SNAKETIMEOUT = 200;
+int SNAKETIMEOUT = 80;
 int RABBITTIMEOUT = 3000;
 
 enum Cell {RABBIT, SNAKE, EMPTY, BORDER};
@@ -84,6 +84,7 @@ void Snake::move()
 		case RABBIT:
 		{
 			View::get()->game->killRabbit(a);
+			View::get()->game->score_++;
 			body.push_front(a);
 			break;
 		}
@@ -121,7 +122,7 @@ void Game::killRabbit(Coord c)
 Snake::Snake()
 {
 	direction = RIGHT;
-	for (int i = 0; i < 5; ++i)
+	for (int i = 0; i < 2; ++i)
 		body.push_back(Coord(8-i, 8));
 }
 
