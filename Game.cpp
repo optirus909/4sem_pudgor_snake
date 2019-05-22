@@ -5,8 +5,8 @@
 
 static std::ofstream fout("log2.txt");
 
-int SNAKETIMEOUT = 50;
-int RABBITTIMEOUT = 250;
+int SNAKETIMEOUT = 100;
+int RABBITTIMEOUT = 2500;
 
 
 void Game::rabbitsVisit(RabbitPainter p)
