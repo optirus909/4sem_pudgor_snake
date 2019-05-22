@@ -6,7 +6,7 @@
 static std::ofstream fout("log2.txt");
 
 int SNAKETIMEOUT = 50;
-int RABBITTIMEOUT = 300;
+int RABBITTIMEOUT = 250;
 
 
 void Game::rabbitsVisit(RabbitPainter p)
@@ -193,13 +193,39 @@ void Game::killRabbit(Coord c)
 
 Snake::Snake()
 {
-	static int num = 0;
+	Dir d [4] = {RIGHT, LEFT, UP, DOWN};
+	direction = d[getRandomNumber(1, 4)];
 	
-	direction = RIGHT;
-	for (int i = 0; i < 2; ++i)
-		body.push_back(Coord(8-i - num, 8-num));
+	Coord c;
 	
-	num -= 10;
+	do
+	{
+		int x = getRandomNumber(1, View::get()->getX());
+		int y = getRandomNumber(1, View::get()->getY());
+		
+		c.first = x;
+		c.second = y;
+	} while(View::get()->game->isFilled(c) != EMPTY) ;
+	
+	body.push_back(c);
+	
+	switch(direction)
+	{
+		case UP:
+			c.second++;
+			break;
+		case LEFT:
+			c.first++;
+			break;
+		case DOWN:
+			c.second--;
+			break;
+		case RIGHT:
+			c.first--;
+			break;
+	}
+	
+	body.push_back(c);
 }
 
 
