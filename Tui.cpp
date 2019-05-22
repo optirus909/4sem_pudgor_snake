@@ -35,11 +35,8 @@ Tui::Tui()
 
 Tui::~Tui()
 {
-	fout << "started func tui dtor" << std::endl;
-	//printf("\n");
 	clear_win();
 	
-	//fout << "started - Tui::dtor" << std::endl;
 	
 	std::string str = "Bye!\n";
 	
@@ -50,9 +47,7 @@ Tui::~Tui()
 	}
 	
 	gotoxy(1, winy_);
-	fout << "pochti ended - Tui::dtor" << std::endl;
 	tcsetattr(0, TCSAFLUSH, &old_);
-	fout << "ended - Tui::dtor" << std::endl;
 }
 
 
@@ -74,9 +69,7 @@ void hdl(int m)
 {
 	View * v = View::get();
 	v->resize();
-	//fout << "    resize draw start" << std::endl;
 	v->draw();
-	//fout << "    resize draw start" << std::endl;
 }
 
 
@@ -110,7 +103,6 @@ void Tui::snakepainter(Coord a, Dir d)
 
 void Tui::rabbitpainter(Coord a)
 {
-	//fout << "       start paint rabbit" << std::endl;
 	gotoxy(a.first, a.second);
 	putchar('@');
 }
@@ -125,15 +117,12 @@ void Tui::draw()
 	this->xline(winy_, '#');
 	this->yline(1, '#');
 	
-	//fout << "snake paint start" << std::endl;
 	game->visit(std::bind(&View::snakepainter, this, _1, _2));
 	game->rabbitsVisit(std::bind(&View::rabbitpainter, this, _1));
-	//fout << "snake paint end\n" << std::endl;
 	this->print_version();
 	
 	this->print_score();
 	gotoxy(1,1);
-	//printf("x = %d, y = %d\n", winx_, winy_);
 	
 	fflush(stdout);
 }
@@ -157,7 +146,6 @@ void Tui::run()
 	fds[0].fd = 0;
 	fds[0].events = POLL_IN;
 	
-	//std::sort(timeouts_.front(), timeouts_.back(), compare) ;
 	
 	while (true)
 	{
@@ -168,23 +156,13 @@ void Tui::run()
 		clock_gettime(CLOCK_REALTIME, &end_time);
 		
 		int dt = (end_time.tv_sec - begin_time.tv_sec) * 1000 + (end_time.tv_nsec - begin_time.tv_nsec) / 1000000;
-		//fout << "timeout = " << timeout_.first << " ";
-		//fout << "dt = " << dt << " ";
 		int tsize = timeouts_.size();
-		//fout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
 		for (int i = 0; i < tsize; i++)
 		{
-			//fout << "start changing timeouts, timeouts_cnt = " << timeouts_.size() << std::endl;
 			timeout temp = timeouts_.front();
-			//fout << "timeouts.front(), timeouts_cnt = " << timeouts_.size() << std::endl;
 			timeouts_.pop_front();
-			//fout << "timeouts.pop_front(), timeouts_cnt = " << timeouts_.size() << std::endl;
-			//fout << "timeout [" << i << "] = " << temp.first << " ";
-			//fout << "dt = " << dt << " ";
 			temp.first -= dt;
-			//fout << "timeout [" << i << "] - dt = " << temp.first << " " << std::endl;
 			timeouts_.push_back(temp);
-			//fout << "timeouts.push_back(), timeouts_cnt = " << timeouts_.size() << std::endl;
 		}
 		
 		
@@ -193,26 +171,19 @@ void Tui::run()
 			read(fds->fd, &key, 1);
 			if(key == 'q')
 			{
-				//fout << "----------------------------exit catched" << std::endl;
 				break;
 			}
 			if (onkey_delegate)
 			{
 				
-				//fout << "----------------------------run - key catched" << std::endl;
 				onkey_delegate->onkey(key);
 			}
 		}
 		tsize = timeouts_.size();
-		//fout << "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>" << std::endl;
 		for (int i = 0; i < tsize; i++)
 		{
-			//fout << "start changing timeouts, timeouts_cnt = " << timeouts_.size() << std::endl;
 			timeout temp = timeouts_.front();
-			//fout << "timeouts.front(), timeouts_cnt = " << timeouts_.size() << std::endl;
 			timeouts_.pop_front();
-			
-			//fout << "timeouts.pop_front(), timeouts_cnt = " << timeouts_.size() << std::endl;
 			
 			if (temp.first <= 0)
 			{
@@ -222,14 +193,10 @@ void Tui::run()
 			{
 				timeouts_.push_back(temp);
 			}
-			
-			//fout << "timeouts.push_back(), timeouts_cnt = " << timeouts_.size() << std::endl;
 		}
 		draw();
 	}
-	fout << "exit" << std::endl;
 	gotoxy(1, 1);
-	fout << "exit - Tui::run" << std::endl;
 }
 
 
@@ -261,7 +228,6 @@ int Tui::getY()
 
 void Tui::resize()
 {
-	//fout << "  resize start" << std::endl;
 	struct winsize w_size;
 	
 	ioctl(1, TIOCGWINSZ, &w_size);
@@ -270,7 +236,6 @@ void Tui::resize()
 	winx_ = w_size.ws_col;
 	
 	clear_win();
-	//fout << "  resize finish" << std::endl;
 }
 
 

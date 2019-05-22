@@ -11,31 +11,23 @@ int RABBITTIMEOUT = 2500;
 
 void Game::rabbitsVisit(RabbitPainter p)
 {
-	//fout << "start rabbitVisit" << std::endl;
 	for(const auto s: rabbits)
 	{
-	//	fout << "visitrabbirrabbit :x = " << s.first << " y = " << s.second << std::endl;
 		p(s);
 	}
-	//fout << "  end rabbitVisit" << std::endl;
 }
 
 void Game::visit(SnakePainter p)
 {
-	//fout << "game paint before fors --------------------" << std::endl;
-	//fout << "snakes count =" << snakes.size() << std::endl;
 	for(const auto &s: snakes)
 	{
-	//	fout << "game paint for snakes" << std::endl;
 		bool first = false;
 		for (const auto &c: s->body)
 		{
-	//		fout << "game paint for bodies" << std::endl;
 			p(c, first ? BODY : s->direction);
 			first = true;
 		}
 	}
-	//fout << "game paint after fors --------------------" << std::endl;
 }
 
 
@@ -96,7 +88,6 @@ int Coord::distance(const Coord &c) const
 void Game::move()
 {
 	bool all_die = true;
-	//fout << "snakes count = " << snakes.size() << std::endl;
 	
 	for(const auto &s: snakes)
 	{
@@ -114,23 +105,13 @@ void Game::move()
 	
 	View::get()->ai_delegate->onMove();
 	View::get()->set_on_timer(SNAKETIMEOUT, std::bind(&Game::move, this));
-	//fout << "  end game move" << std::endl;
 }
 
 
 void Snake::move()
 {
-	static int number = 0;
-	fout << "-----------------------------------------------------------------------" << std::endl;
-	fout << "snake no_ " << number % 2 << std::endl;
-	fout << "snake alive: " << alive_ << std::endl;
-	
-	number++;
-	
 	auto a = body.front();
 	
-	fout << "snake coord : x = " << a.first << " y = " << a.second << std::endl;
-	//fout << "      start snake move" << std::endl;
 	switch(direction)
 	{
 		case UP:
@@ -146,8 +127,6 @@ void Snake::move()
 			a.first++;
 			break;
 	}
-	
-	//fout << "after snake coord : x = " << a.first << " y = " << a.second << std::endl;
 	
 	switch (View::get()->game->isFilled(a))
 	{
@@ -171,10 +150,6 @@ void Snake::move()
 			break;
 		}
 	}
-	
-	
-	
-	//fout << "        end snake move" << std::endl;
 }
 
 
@@ -235,16 +210,13 @@ int getRandomNumber(int minv, int maxv)
 	do
 	{
 		temp = rand() % maxv;
-		//fout << "rand number = " << temp << std::endl;
 	} while (temp < minv || temp > maxv);
 	
-	//fout << "               returned rand number = " << temp << std::endl;
 	return temp;
 }
 
 void Game::newRabbit()
 {
-	//fout << "  start newRabbit" << std::endl;
 	Coord * c = new Coord;
 	View * v = View::get();
 	v->set_on_timer(RABBITTIMEOUT, std::bind(&Game::newRabbit, this));
@@ -260,10 +232,6 @@ void Game::newRabbit()
 			break;
 		}
 	}
-	
-	//fout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<rabbits_cnt = " << rabbits.size() << std::endl;
-	
-	//fout << "    end newRabbit" << std::endl;
 }
 
 

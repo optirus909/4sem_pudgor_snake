@@ -9,8 +9,6 @@
 #include <list>
 #include <functional>
 
-//#include "View.h"
-
 struct Coord : public std::pair <int, int>
 {
 	using Base = std::pair<int, int>;

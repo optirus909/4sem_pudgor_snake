@@ -28,8 +28,6 @@ int main()
 	
 	v->draw();
 	v->run();
-	//fout << "main started view dtor" << std::endl;
 	v->~View();
-	//fout << "main ended view dtor" << std::endl;
 	return 0;
 }

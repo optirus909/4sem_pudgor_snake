@@ -38,8 +38,6 @@ void Human::onkey(int key)
 				snake->direction = RIGHT;
 			break;
 	}
-	//printf("\e[%d;%dH", 50, 50);
-	//printf("%c", key);
 }
 
 KeyPressable::~KeyPressable()
