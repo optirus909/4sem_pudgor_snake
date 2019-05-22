@@ -14,6 +14,7 @@
 struct Coord : public std::pair <int, int>
 {
 	using Base = std::pair<int, int>;
+	int distance(const Coord &c) const;
 	using Base::Base;
 };
 
@@ -27,6 +28,9 @@ class Snake
 public:
 	std::list <Coord> body;
 	Dir direction;
+	bool alive_ = true;
+	
+	Coord nextPos(Dir d, Coord c);
 	
 	void move();
 	Snake();
@@ -52,6 +56,7 @@ public:
 	void newRabbit();
 	void killRabbit(Coord c);
 	int isFilled(Coord c);
+	Coord near(Coord c);
 	Game();
 	~Game();
 };

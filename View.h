@@ -5,8 +5,11 @@
 #ifndef SNAKE_VIEW_H
 #define SNAKE_VIEW_H
 
-#include <functional>
 #include "Game.h"
+
+class AI;
+
+#include <functional>
 
 
 using timeout_fn = std::function<void ()>;
@@ -36,6 +39,7 @@ public:
 	Game * game;
 	
 	KeyPressable * onkey_delegate;
+	AI * ai_delegate;
 	
 	int virtual getX() = 0;
 	int virtual getY() = 0;
@@ -43,6 +47,11 @@ public:
 	void setonkey(KeyPressable * p)
 	{
 		onkey_delegate = p;
+	}
+	
+	void setOnAI(AI * ai)
+	{
+		ai_delegate = ai;
 	}
 	
 	void set_on_timer(int time, timeout_fn t)

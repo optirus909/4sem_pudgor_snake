@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "View.h"
+#include "AI.h"
 #include <fstream>
 
 static std::ofstream fout("log.txt");
@@ -7,7 +8,6 @@ static std::ofstream fout("log.txt");
 int SNAKETIMEOUT = 80;
 int RABBITTIMEOUT = 3000;
 
-enum Cell {RABBIT, SNAKE, EMPTY, BORDER};
 
 void Game::rabbitsVisit(RabbitPainter p)
 {
@@ -45,22 +45,83 @@ void Game::add(Snake * s)
 }
 
 
+Coord Game::near(Coord c)
+{
+	if(rabbits.size() == 0)
+		return Coord(0, 0);
+	
+	Coord r(0,0);
+	int min = rabbits.front().distance(c);
+	r = rabbits.front();
+	
+	for(const auto s: rabbits)
+	{
+		if(min > s.distance(c))
+		{
+			min = s.distance(c);
+			r = s;
+		}
+	}
+	
+	return r;
+}
+
+Coord Snake::nextPos(Dir d, Coord c)
+{
+	switch(d)
+	{
+		case UP:
+			c.second--;
+			break;
+		case LEFT:
+			c.first--;
+			break;
+		case DOWN:
+			c.second++;
+			break;
+		case RIGHT:
+			c.first++;
+			break;
+	}
+	
+	return c;
+}
+
+
+int Coord::distance(const Coord &c) const
+{
+	return abs(c.first - first) + abs(c.second - second);
+}
+
 void Game::move()
 {
+	bool all_die = true;
 	//fout << "  start game move" << std::endl;
 	
 	for(const auto &s: snakes)
 	{
-		s->move();
-		View::get()->set_on_timer(SNAKETIMEOUT, std::bind(&Game::move, this));
+		if (s->alive_)
+		{
+			all_die = false;
+			s->move();
+		}
 	}
 	
+	if(all_die)
+	{
+		View::get()->~View();
+	}
+	
+	View::get()->ai_delegate->onMove();
+	View::get()->set_on_timer(SNAKETIMEOUT, std::bind(&Game::move, this));
 	//fout << "  end game move" << std::endl;
 }
 
 
 void Snake::move()
 {
+	
+	
 	auto a = body.front();
 	//fout << "      start snake move" << std::endl;
 	switch(direction)
@@ -89,10 +150,10 @@ void Snake::move()
 			break;
 		}
 		case SNAKE:
-			View::get()->~View();
+			alive_ = false;
 			break;
 		case BORDER:
-			View::get()->~View();
+			alive_ = false;
 			break;
 		case EMPTY:
 		{
@@ -189,7 +250,6 @@ int Game::isFilled(Coord c)
 	
 	return EMPTY;
 }
-
 
 
 Game::Game()
