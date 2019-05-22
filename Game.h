@@ -21,7 +21,7 @@ struct Coord : public std::pair <int, int>
 using Rabbit = Coord;
 
 enum Dir {BODY, UP, DOWN, LEFT, RIGHT};
-
+enum Cell {RABBIT, SNAKE, EMPTY, BORDER};
 
 class Snake
 {

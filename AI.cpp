@@ -3,8 +3,12 @@
 //
 
 #include <random>
+#include <fstream>
 #include "AI.h"
 #include "View.h"
+
+
+static std::ofstream fout("log.txt");
 
 AI::AI(Snake * s) : Control(s)
 {
@@ -39,6 +43,7 @@ void AI::onMove()
 			if(after < before && (next_pos == EMPTY || next_pos == RABBIT))
 			{
 				ok = true;
+				fout << "AI dir setted: dir = " << snake->direction << std::endl;
 				break;
 			}
 		}
@@ -52,6 +57,7 @@ void AI::onMove()
 			Coord c = snake->nextPos(p, snake->body.front());
 			if(insgame->isFilled(c) == EMPTY)
 			{
+				fout << "AI dir setted: dir = " << snake->direction << std::endl;
 				break;
 			}
 		}

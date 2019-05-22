@@ -3,10 +3,10 @@
 #include "AI.h"
 #include <fstream>
 
-static std::ofstream fout("log.txt");
+static std::ofstream fout("log2.txt");
 
-int SNAKETIMEOUT = 80;
-int RABBITTIMEOUT = 3000;
+int SNAKETIMEOUT = 50;
+int RABBITTIMEOUT = 300;
 
 
 void Game::rabbitsVisit(RabbitPainter p)
@@ -96,7 +96,7 @@ int Coord::distance(const Coord &c) const
 void Game::move()
 {
 	bool all_die = true;
-	//fout << "  start game move" << std::endl;
+	//fout << "snakes count = " << snakes.size() << std::endl;
 	
 	for(const auto &s: snakes)
 	{
@@ -120,9 +120,16 @@ void Game::move()
 
 void Snake::move()
 {
+	static int number = 0;
+	fout << "-----------------------------------------------------------------------" << std::endl;
+	fout << "snake no_ " << number % 2 << std::endl;
+	fout << "snake alive: " << alive_ << std::endl;
 	
+	number++;
 	
 	auto a = body.front();
+	
+	fout << "snake coord : x = " << a.first << " y = " << a.second << std::endl;
 	//fout << "      start snake move" << std::endl;
 	switch(direction)
 	{
@@ -139,6 +146,8 @@ void Snake::move()
 			a.first++;
 			break;
 	}
+	
+	//fout << "after snake coord : x = " << a.first << " y = " << a.second << std::endl;
 	
 	switch (View::get()->game->isFilled(a))
 	{
@@ -184,9 +193,13 @@ void Game::killRabbit(Coord c)
 
 Snake::Snake()
 {
+	static int num = 0;
+	
 	direction = RIGHT;
 	for (int i = 0; i < 2; ++i)
-		body.push_back(Coord(8-i, 8));
+		body.push_back(Coord(8-i - num, 8-num));
+	
+	num -= 10;
 }
 
 

@@ -7,7 +7,6 @@
 
 #include "Control.h"
 
-enum Cell {RABBIT, SNAKE, EMPTY, BORDER};
 
 class AI : public Control
 {
